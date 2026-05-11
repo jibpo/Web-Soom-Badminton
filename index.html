@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Badminton Pro - Modern UI</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     <div id="randomPage">
         <div class="header-section">
             <div class="header-content">
-                <p class="welcome-text">โจ๋เรนเจอร์แบด แบด,</p>
+                <p class="welcome-text">โจ๋เรนเจอร์ Match!,</p>
                 <h1 class="main-title">Badminton Match!</h1>
             </div>
             <div class="circle-deco"></div>
@@ -77,16 +77,27 @@
     </div>
 </div>
 
+<div id="deuceModal" class="modal">
+    <div class="modal-content">
+        <h2>คะแนนเท่ากัน 20-20!</h2>
+        <p>ต้องการดิวส์ต่อหรือจบเกมเพียงเท่านี้?</p>
+        <div class="modal-actions">
+            <button class="btn-primary" onclick="startDeuce()">เล่นต่อ (Deuce)</button>
+            <button class="btn-soft" onclick="showEndModal()">จบเกมเลย</button>
+        </div>
+    </div>
+</div>
+
 <div id="endModal" class="modal">
     <div class="modal-content">
         <h2 id="winnerTitle">Finished!</h2>
         <div class="modal-actions">
-            <button class="btn-soft" onclick="closeModal()">Continue</button>
+            <button class="btn-soft" onclick="closeModal()">Back to Score</button>
             <button class="btn-primary" onclick="endGame()">New Match</button>
         </div>
     </div>
 </div>
 
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>

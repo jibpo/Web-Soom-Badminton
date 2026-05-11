@@ -2,9 +2,10 @@ let players = [];
 let matchHistory = [];
 let currentMatchIndex = -1;
 let score1 = 0, score2 = 0;
+let isDeuceMode = false;
 
 function load8Players() {
-    const list = ["Mad", "Plug", "Petny", "Bo", "Jibpo", "May", "Duen", "Anna"];
+    const list = ["Mad", "Plug", "May", "Jibpo", "Petny", "Duen", "Bo", "Anna"];
     document.getElementById('playerInput').value = list.join('\n');
 }
 
@@ -72,7 +73,6 @@ function getStatsSnapshot() {
 }
 
 function openScoreboard() {
-    document.getElementById('randomPage').style.none = 'none'; // Clear older
     document.getElementById('randomPage').style.display = 'none';
     document.getElementById('scorePage').style.display = 'block';
     document.getElementById('namesTeam1').innerText = `${document.getElementById('p1').innerText} & ${document.getElementById('p2').innerText}`;
@@ -84,18 +84,11 @@ function handleScoreClick(e, team) {
     const rect = e.currentTarget.getBoundingClientRect();
     const isPlus = (e.clientX - rect.left) > rect.width / 2;
     
-    // --- ระบบสั่นแบบอัปเกรด ---
     if (window.navigator.vibrate) {
-        if (isPlus) {
-            // สั่นสั้นๆ 1 ครั้งตอนเพิ่มแต้ม
-            window.navigator.vibrate(50); 
-        } else {
-            // สั่น 2 ครั้งตอนลดแต้ม (สั่น 40ms, หยุด 30ms, สั่น 40ms)
-            window.navigator.vibrate([40, 30, 40]);
-        }
+        if (isPlus) window.navigator.vibrate(50);
+        else window.navigator.vibrate([40, 30, 40]);
     }
-    // -----------------------
-
+    
     const val = isPlus ? 1 : -1;
     if (team === 1) score1 = Math.max(0, score1 + val);
     else score2 = Math.max(0, score2 + val);
@@ -103,17 +96,32 @@ function handleScoreClick(e, team) {
     document.getElementById('s1').innerText = score1;
     document.getElementById('s2').innerText = score2;
 
-    // อัปเดตลูกขนไก่
     if (val > 0) updateShuttle(team);
     else updateShuttle(0);
 
-    // เช็คจบเกม
-    if (val > 0 && (((score1 >= 21 || score2 >= 21) && Math.abs(score1 - score2) >= 2) || score1 === 30 || score2 === 30)) {
-        // สั่นยาวๆ แจ้งเตือนจบเกม
-        if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 100, 50, 300]);
-        document.getElementById('winnerTitle').innerText = score1 > score2 ? "Red Wins!" : "Blue Wins!";
-        document.getElementById('endModal').style.display = 'flex';
+    if (val > 0) {
+        if (score1 === 20 && score2 === 20 && !isDeuceMode) {
+            document.getElementById('deuceModal').style.display = 'flex';
+        } else if (!isDeuceMode && (score1 === 21 || score2 === 21)) {
+            showEndModal();
+        } else if (isDeuceMode) {
+            if (Math.abs(score1 - score2) >= 2 || score1 === 30 || score2 === 30) {
+                showEndModal();
+            }
+        }
     }
+}
+
+function startDeuce() {
+    isDeuceMode = true;
+    document.getElementById('deuceModal').style.display = 'none';
+}
+
+function showEndModal() {
+    document.getElementById('deuceModal').style.display = 'none';
+    document.getElementById('winnerTitle').innerText = score1 > score2 ? "Red Wins!" : "Blue Wins!";
+    document.getElementById('endModal').style.display = 'flex';
+    if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 100, 50, 300]);
 }
 
 function updateShuttle(winner) {
@@ -129,7 +137,7 @@ function backToRandom() {
 }
 
 function resetScore() {
-    score1 = 0; score2 = 0;
+    score1 = 0; score2 = 0; isDeuceMode = false;
     document.getElementById('s1').innerText = "0";
     document.getElementById('s2').innerText = "0";
     updateShuttle(0);
