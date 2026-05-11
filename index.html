@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Badminton Pro Score</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div id="randomPage">
+        <div class="card">
+            <h2 class="title">🏸 โจ๋เรนเจอร์</h2>
+            <textarea id="playerInput" placeholder="ใส่ชื่อคนละบรรทัด..."></textarea>
+            <button class="btn-outline" onclick="load8Players()">🧪 ใช้ตัวอย่าง 8 คน</button>
+            <button class="btn-green" style="margin-top:20px" onclick="startRandom()">เริ่มสุ่มคู่แรก</button>
+            <button class="btn-purple" onclick="nextMatch()">สุ่มรอบถัดไป</button>
+            <button class="btn-outline" style="border:none; margin-top:10px" onclick="resetAll()">🔄 รีเซ็ตทั้งหมด</button>
+        </div>
+
+        <div id="matchCard" class="card" style="display:none">
+            <div id="roundCount" class="round-count-text">แมตช์ที่ 1</div>
+            <div class="match-display">
+                <div class="red-side"><div id="p1" class="name-tag">-</div><div id="p2" class="name-tag">-</div></div>
+                <div class="vs-text">VS</div>
+                <div class="blue-side"><div id="p3" class="name-tag">-</div><div id="p4" class="name-tag">-</div></div>
+            </div>
+            <button class="btn-score-nav" onclick="openScoreboard()">⚔️ ไปหน้านับคะแนน</button>
+            <div id="playerStats" class="stats"></div>
+        </div>
+    </div>
+
+    <div id="scorePage" style="display:none; text-align:center;">
+        <div class="score-header">
+            <span class="hint">👈 ลดแต้ม</span>
+            <span class="live-label">LIVE SCORE</span>
+            <span class="hint">เพิ่มแต้ม 👉</span>
+        </div>
+        
+        <div class="score-container">
+            <div class="score-area red-team" onclick="handleScoreClick(event, 1)">
+                <div id="namesTeam1" class="player-names-display"></div>
+                <div id="s1" class="score-val">0</div>
+            </div>
+            
+            <div class="score-area blue-team" onclick="handleScoreClick(event, 2)">
+                <div id="namesTeam2" class="player-names-display"></div>
+                <div id="s2" class="score-val">0</div>
+            </div>
+        </div>
+        <button class="btn-outline btn-back" onclick="backToRandom()">ย้อนกลับ</button>
+    </div>
+</div>
+
+<div id="endModal" class="modal">
+    <div class="modal-content">
+        <h1 id="winnerTitle">จบเกม!</h1>
+        <p>คะแนนถึงเกณฑ์ตัดสินแล้ว</p>
+        <button class="btn-purple" onclick="closeModal()">นับต่อ (Deuce)</button>
+        <button class="btn-green" onclick="endGame()">จบเกม (สุ่มคู่ใหม่)</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
