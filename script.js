@@ -1,9 +1,10 @@
 let players = [];
-let round = 0, score1 = 0, score2 = 0;
-let currentMatchPlayers = [];
+let matchHistory = [];
+let currentMatchIndex = -1;
+let score1 = 0, score2 = 0;
 
 function load8Players() {
-    const list = ["Mad", "Plug", "May", "Petny", "Jibpo", "Bo", "Duen", "Anna"];
+    const list = ["Mad", "Plug", "Petny", "Bo", "Jibpo", "May", "Duen", "Anna"];
     document.getElementById('playerInput').value = list.join('\n');
 }
 
@@ -12,54 +13,114 @@ function startRandom() {
     const names = val.split('\n').filter(n => n.trim() !== "");
     if (names.length < 4) { alert("กรุณาใส่ชื่ออย่างน้อย 4 คน"); return; }
     players = names.map(n => ({ name: n, playCount: 0, lastPlayed: false }));
-    round = 0;
+    matchHistory = []; 
+    currentMatchIndex = -1;
     document.getElementById('matchCard').style.display = 'block';
-    pickMatch();
+    nextMatch();
 }
 
-function pickMatch() {
-    round++;
-    players.sort((a, b) => a.playCount - b.playCount || (a.lastPlayed ? 1 : -1) || Math.random() - 0.5);
-    currentMatchPlayers = players.slice(0, 4);
-    players.forEach(p => p.lastPlayed = false);
-    currentMatchPlayers.forEach(p => { p.playCount++; p.lastPlayed = true; });
+function nextMatch() {
+    if (currentMatchIndex < matchHistory.length - 1) {
+        currentMatchIndex++;
+        displayMatch(matchHistory[currentMatchIndex]);
+    } else {
+        pickNewMatch();
+    }
+}
 
-    document.getElementById('roundCount').innerText = "Match " + round;
-    document.getElementById('p1').innerText = currentMatchPlayers[0].name;
-    document.getElementById('p2').innerText = currentMatchPlayers[1].name;
-    document.getElementById('p3').innerText = currentMatchPlayers[2].name;
-    document.getElementById('p4').innerText = currentMatchPlayers[3].name;
-    
+function pickNewMatch() {
+    players.sort((a, b) => a.playCount - b.playCount || (a.lastPlayed ? 1 : -1) || Math.random() - 0.5);
+    const selected = players.slice(0, 4);
+    players.forEach(p => p.lastPlayed = false);
+    selected.forEach(p => { p.playCount++; p.lastPlayed = true; });
+
+    const newMatch = {
+        round: matchHistory.length + 1,
+        p1: selected[0].name, p2: selected[1].name,
+        p3: selected[2].name, p4: selected[3].name,
+        stats: getStatsSnapshot()
+    };
+    matchHistory.push(newMatch);
+    currentMatchIndex = matchHistory.length - 1;
+    displayMatch(newMatch);
+}
+
+function prevMatch() {
+    if (currentMatchIndex > 0) {
+        currentMatchIndex--;
+        displayMatch(matchHistory[currentMatchIndex]);
+    }
+}
+
+function displayMatch(match) {
+    document.getElementById('roundCount').innerText = "Match " + match.round;
+    document.getElementById('p1').innerText = match.p1;
+    document.getElementById('p2').innerText = match.p2;
+    document.getElementById('p3').innerText = match.p3;
+    document.getElementById('p4').innerText = match.p4;
+    document.getElementById('playerStats').innerText = match.stats;
+
+    const prevBtn = document.getElementById('prevBtn');
+    prevBtn.disabled = currentMatchIndex === 0;
+    prevBtn.style.opacity = prevBtn.disabled ? "0.3" : "1";
+}
+
+function getStatsSnapshot() {
     let txt = "Stats: ";
     players.forEach(p => txt += `${p.name}(${p.playCount}) `);
-    document.getElementById('playerStats').innerText = txt;
+    return txt;
 }
 
 function openScoreboard() {
+    document.getElementById('randomPage').style.none = 'none'; // Clear older
     document.getElementById('randomPage').style.display = 'none';
     document.getElementById('scorePage').style.display = 'block';
-    document.getElementById('namesTeam1').innerText = `${currentMatchPlayers[0].name} & ${currentMatchPlayers[1].name}`;
-    document.getElementById('namesTeam2').innerText = `${currentMatchPlayers[2].name} & ${currentMatchPlayers[3].name}`;
+    document.getElementById('namesTeam1').innerText = `${document.getElementById('p1').innerText} & ${document.getElementById('p2').innerText}`;
+    document.getElementById('namesTeam2').innerText = `${document.getElementById('p3').innerText} & ${document.getElementById('p4').innerText}`;
     resetScore();
 }
 
 function handleScoreClick(e, team) {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const isPlus = x > rect.width / 2;
+    const isPlus = (e.clientX - rect.left) > rect.width / 2;
     
-    if (window.navigator.vibrate) window.navigator.vibrate(isPlus ? 40 : [30, 50]);
-    
-    if (team === 1) score1 = Math.max(0, score1 + (isPlus ? 1 : -1));
-    else score2 = Math.max(0, score2 + (isPlus ? 1 : -1));
+    // --- ระบบสั่นแบบอัปเกรด ---
+    if (window.navigator.vibrate) {
+        if (isPlus) {
+            // สั่นสั้นๆ 1 ครั้งตอนเพิ่มแต้ม
+            window.navigator.vibrate(50); 
+        } else {
+            // สั่น 2 ครั้งตอนลดแต้ม (สั่น 40ms, หยุด 30ms, สั่น 40ms)
+            window.navigator.vibrate([40, 30, 40]);
+        }
+    }
+    // -----------------------
+
+    const val = isPlus ? 1 : -1;
+    if (team === 1) score1 = Math.max(0, score1 + val);
+    else score2 = Math.max(0, score2 + val);
     
     document.getElementById('s1').innerText = score1;
     document.getElementById('s2').innerText = score2;
 
-    if (((score1 >= 21 || score2 >= 21) && Math.abs(score1 - score2) >= 2) || score1 === 30 || score2 === 30) {
+    // อัปเดตลูกขนไก่
+    if (val > 0) updateShuttle(team);
+    else updateShuttle(0);
+
+    // เช็คจบเกม
+    if (val > 0 && (((score1 >= 21 || score2 >= 21) && Math.abs(score1 - score2) >= 2) || score1 === 30 || score2 === 30)) {
+        // สั่นยาวๆ แจ้งเตือนจบเกม
+        if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 100, 50, 300]);
         document.getElementById('winnerTitle').innerText = score1 > score2 ? "Red Wins!" : "Blue Wins!";
         document.getElementById('endModal').style.display = 'flex';
     }
+}
+
+function updateShuttle(winner) {
+    document.getElementById('shuttle1').classList.remove('active');
+    document.getElementById('shuttle2').classList.remove('active');
+    if (winner === 1) document.getElementById('shuttle1').classList.add('active');
+    if (winner === 2) document.getElementById('shuttle2').classList.add('active');
 }
 
 function backToRandom() {
@@ -67,8 +128,13 @@ function backToRandom() {
     document.getElementById('randomPage').style.display = 'block';
 }
 
-function resetScore() { score1 = 0; score2 = 0; document.getElementById('s1').innerText = "0"; document.getElementById('s2').innerText = "0"; }
+function resetScore() {
+    score1 = 0; score2 = 0;
+    document.getElementById('s1').innerText = "0";
+    document.getElementById('s2').innerText = "0";
+    updateShuttle(0);
+}
+
 function closeModal() { document.getElementById('endModal').style.display = 'none'; }
-function endGame() { closeModal(); nextMatch(); backToRandom(); }
-function nextMatch() { if (players.length === 0) return; pickMatch(); }
+function endGame() { closeModal(); backToRandom(); }
 function resetAll() { if (confirm("Reset everything?")) location.reload(); }

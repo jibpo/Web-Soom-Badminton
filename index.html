@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Badminton Pro - Modern UI</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     <div id="randomPage">
         <div class="header-section">
             <div class="header-content">
-                <p class="welcome-text">Welcome back,</p>
+                <p class="welcome-text">โจ๋เรนเจอร์แบด แบด,</p>
                 <h1 class="main-title">Badminton Match!</h1>
             </div>
             <div class="circle-deco"></div>
@@ -22,12 +22,10 @@
         <div class="card main-card">
             <h3 class="section-label">Player List</h3>
             <textarea id="playerInput" placeholder="ใส่ชื่อคนละบรรทัดที่นี่..."></textarea>
-            
             <div class="action-grid">
                 <button class="btn-soft" onclick="load8Players()">🧪 Sample</button>
                 <button class="btn-primary" onclick="startRandom()">Start Match</button>
             </div>
-            <button class="btn-secondary" onclick="nextMatch()">Next Match</button>
         </div>
 
         <div id="matchCard" class="match-card" style="display:none">
@@ -45,7 +43,14 @@
                     <div id="p4" class="player-name">-</div>
                 </div>
             </div>
-            <button class="btn-dark" onclick="openScoreboard()">Scoreboard ⚔️</button>
+            
+            <div class="match-actions">
+                <button class="btn-dark" onclick="openScoreboard()">Scoreboard ⚔️</button>
+                <div class="match-nav-grid">
+                    <button class="btn-soft" id="prevBtn" onclick="prevMatch()">⬅️ Prev</button>
+                    <button class="btn-secondary" onclick="nextMatch()">Next ➡️</button>
+                </div>
+            </div>
             <p id="playerStats" class="stats-text"></p>
             <button class="btn-text" onclick="resetAll()">Reset All</button>
         </div>
@@ -55,11 +60,17 @@
         <div class="score-screen">
             <div class="score-zone team-red" onclick="handleScoreClick(event, 1)">
                 <div id="namesTeam1" class="names-overlay"></div>
-                <div id="s1" class="huge-score">0</div>
+                <div class="score-row">
+                    <div id="s1" class="huge-score">0</div>
+                    <div id="shuttle1" class="shuttle-icon">🏸</div>
+                </div>
             </div>
             <div class="score-zone team-blue" onclick="handleScoreClick(event, 2)">
                 <div id="namesTeam2" class="names-overlay"></div>
-                <div id="s2" class="huge-score">0</div>
+                <div class="score-row">
+                    <div id="s2" class="huge-score">0</div>
+                    <div id="shuttle2" class="shuttle-icon">🏸</div>
+                </div>
             </div>
             <button class="back-circle" onclick="backToRandom()">✕</button>
         </div>
@@ -70,12 +81,12 @@
     <div class="modal-content">
         <h2 id="winnerTitle">Finished!</h2>
         <div class="modal-actions">
-            <button class="btn-secondary" onclick="closeModal()">Continue</button>
+            <button class="btn-soft" onclick="closeModal()">Continue</button>
             <button class="btn-primary" onclick="endGame()">New Match</button>
         </div>
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=3"></script>
 </body>
 </html>

@@ -12,86 +12,87 @@
 
 body {
     font-family: 'Kanit', sans-serif;
-    background-color: #e8eaf6;
-    margin: 0; padding: 0;
-    color: var(--text-black);
-    display: flex; justify-content: center;
-    -webkit-tap-highlight-color: transparent;
-    overflow-x: hidden;
+    background-color: #e8eaf6; margin: 0; padding: 0;
+    color: var(--text-black); display: flex; justify-content: center;
+    -webkit-tap-highlight-color: transparent; overflow-x: hidden; width: 100%;
 }
 
 .container { width: 100%; max-width: 450px; min-height: 100vh; position: relative; }
 
-/* Header */
 .header-section {
-    background-color: var(--main-purple);
-    height: 220px; border-radius: 0 0 60px 60px;
-    padding: 40px 30px; position: relative; overflow: hidden;
+    background-color: var(--main-purple); height: 180px; border-radius: 0 0 50px 50px;
+    padding: 30px 20px; position: relative; overflow: hidden;
 }
 
 .header-content { position: relative; z-index: 2; color: var(--white); }
-.welcome-text { margin: 0; opacity: 0.8; font-weight: 300; }
-.main-title { margin: 5px 0; font-size: 28px; letter-spacing: -1px; }
+.welcome-text { margin: 0; opacity: 0.8; font-size: 14px; }
+.main-title { margin: 5px 0; font-size: 24px; letter-spacing: -1px; }
 
 .circle-deco {
-    position: absolute; width: 180px; height: 180px;
-    background-color: var(--accent-yellow);
-    border-radius: 50%; top: -40px; right: -40px; opacity: 0.4;
+    position: absolute; width: 150px; height: 150px; background-color: var(--accent-yellow);
+    border-radius: 50%; top: -30px; right: -30px; opacity: 0.4;
 }
 
-/* Cards */
 .card {
-    background-color: var(--white);
-    margin: -60px 20px 20px 20px;
-    border-radius: 40px; padding: 30px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+    background-color: var(--white); margin: -30px 15px 20px 15px;
+    border-radius: 35px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     position: relative; z-index: 5;
 }
 
-.section-label { font-size: 14px; color: var(--text-grey); margin-bottom: 10px; }
-
 textarea {
-    width: 100%; height: 100px; border-radius: 25px;
-    border: none; background-color: #f5f6fa;
-    padding: 20px; font-family: inherit; font-size: 16px;
-    box-sizing: border-box; margin-bottom: 15px; outline: none;
+    width: 100%; height: 90px; border-radius: 20px; border: none;
+    background-color: #f5f6fa; padding: 15px; font-family: inherit;
+    font-size: 16px; box-sizing: border-box; margin-bottom: 15px; outline: none;
 }
 
-/* Buttons */
 button { border: none; cursor: pointer; font-family: 'Kanit'; transition: 0.2s; }
 button:active { transform: scale(0.95); }
 
-.btn-primary { background-color: var(--main-purple); color: white; border-radius: 20px; padding: 15px; width: 100%; font-weight: 500; }
-.btn-secondary { background-color: var(--accent-yellow); color: var(--text-black); border-radius: 20px; padding: 15px; width: 100%; margin-top: 10px; }
-.btn-soft { background-color: #f1f2f6; color: var(--text-grey); border-radius: 20px; padding: 15px; }
-.btn-dark { background-color: var(--text-black); color: white; border-radius: 25px; padding: 15px; width: 100%; margin-top: 20px; }
-.btn-text { background: none; color: var(--text-grey); font-size: 13px; margin: 20px auto 0; display: block; text-decoration: underline; }
+.btn-primary { background-color: var(--main-purple); color: white; border-radius: 18px; padding: 14px; width: 100%; font-weight: 500; }
+.btn-secondary { background-color: var(--accent-yellow); color: var(--text-black); border-radius: 18px; padding: 14px; width: 100%; }
+.btn-soft { background-color: #f1f2f6; color: var(--text-grey); border-radius: 18px; padding: 14px; }
+.btn-dark { background-color: var(--text-black); color: white; border-radius: 20px; padding: 15px; width: 100%; margin-bottom: 10px; }
+.btn-text { background: none; color: var(--text-grey); font-size: 13px; margin: 15px auto 0; display: block; text-decoration: underline; }
 
 .action-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; }
+.match-nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* Match Card */
 .match-card {
-    background-color: var(--soft-cream);
-    margin: 0 20px 40px 20px; border-radius: 40px; padding: 30px;
-    border: 2px dashed var(--accent-pink);
+    background-color: var(--soft-cream); margin: 0 15px 40px 15px;
+    border-radius: 35px; padding: 25px; border: 2px dashed var(--accent-pink);
 }
 
-.match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.vs-badge { background: var(--white); padding: 5px 15px; border-radius: 15px; font-weight: bold; font-size: 14px; }
-.player-name { font-size: 18px; font-weight: 500; margin-bottom: 5px; }
+.match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.vs-badge { background: var(--white); padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 12px; }
+.player-name { font-size: 18px; font-weight: 500; margin-bottom: 3px; }
 .red { color: var(--red); }
 .blue { color: var(--blue); }
 
-/* Fullscreen Score - Clean Version */
-.score-screen { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: #000; }
-.score-zone { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-.huge-score { font-size: 180px; font-weight: 800; color: white; line-height: 1; margin: 0; }
-.names-overlay { position: absolute; top: 40px; color: rgba(255,255,255,0.7); font-size: 18px; text-align: center; width: 90%; }
-.team-red { background-color: var(--red); }
-.team-blue { background-color: var(--blue); border-top: 2px solid rgba(255,255,255,0.1); }
-.back-circle { position: absolute; top: 30px; right: 30px; width: 45px; height: 45px; border-radius: 50%; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); z-index: 10; display: flex; align-items: center; justify-content: center; }
+/* Score Screen */
+.score-screen { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; }
+.score-zone { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+.score-row { display: flex; align-items: center; justify-content: center; position: relative; }
+.huge-score { font-size: 30vh; font-weight: 800; color: white; line-height: 1; z-index: 1; }
 
-/* Modal */
-.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; }
-.modal-content { background: white; padding: 40px; border-radius: 40px; width: 80%; max-width: 340px; text-align: center; }
-.stats-text { font-size: 12px; color: var(--text-grey); margin-top: 15px; text-align: center; opacity: 0.7; }
+.shuttle-icon {
+    font-size: 45px; position: absolute; right: -70px; opacity: 0;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0);
+}
+.shuttle-icon.active {
+    opacity: 1; transform: scale(1) rotate(-15deg);
+    animation: bounceShuttle 0.8s infinite alternate;
+}
+
+@keyframes bounceShuttle {
+    from { transform: scale(1) rotate(-15deg) translateY(0); }
+    to { transform: scale(1.1) rotate(5deg) translateY(-10px); }
+}
+
+.names-overlay { position: absolute; top: 30px; color: rgba(255,255,255,0.7); font-size: 16px; text-align: center; width: 90%; }
+.team-red { background-color: var(--red); }
+.team-blue { background-color: var(--blue); }
+.back-circle { position: absolute; top: 25px; right: 25px; width: 45px; height: 45px; border-radius: 50%; background: rgba(0,0,0,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); z-index: 10; display: flex; align-items: center; justify-content: center; }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; }
+.modal-content { background: white; padding: 30px; border-radius: 35px; width: 80%; max-width: 320px; text-align: center; }
+.stats-text { font-size: 11px; color: var(--text-grey); margin-top: 15px; text-align: center; opacity: 0.7; }
