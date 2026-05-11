@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Badminton Pro Score</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Badminton Pro Score - Fullscreen</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,11 +17,11 @@
             <button class="btn-outline" onclick="load8Players()">🧪 ใช้ตัวอย่าง 8 คน</button>
             <button class="btn-green" style="margin-top:20px" onclick="startRandom()">เริ่มสุ่มคู่แรก</button>
             <button class="btn-purple" onclick="nextMatch()">สุ่มรอบถัดไป</button>
-            <button class="btn-outline" style="border:none; margin-top:10px" onclick="resetAll()">🔄 รีเซ็ตทั้งหมด</button>
+            <button class="btn-reset" onclick="resetAll()">🔄 รีเซ็ตทั้งหมด</button>
         </div>
 
         <div id="matchCard" class="card" style="display:none">
-            <div id="roundCount" class="round-count-text">แมตช์ที่ 1</div>
+            <div id="roundCount" class="round-text">แมตช์ที่ 1</div>
             <div class="match-display">
                 <div class="red-side"><div id="p1" class="name-tag">-</div><div id="p2" class="name-tag">-</div></div>
                 <div class="vs-text">VS</div>
@@ -34,25 +32,21 @@
         </div>
     </div>
 
-    <div id="scorePage" style="display:none; text-align:center;">
-        <div class="score-header">
-            <span class="hint">👈 ลดแต้ม</span>
-            <span class="live-label">LIVE SCORE</span>
-            <span class="hint">เพิ่มแต้ม 👉</span>
-        </div>
-        
-        <div class="score-container">
-            <div class="score-area red-team" onclick="handleScoreClick(event, 1)">
-                <div id="namesTeam1" class="player-names-display"></div>
-                <div id="s1" class="score-val">0</div>
+    <div id="scorePage" style="display:none;">
+        <div class="full-score-container">
+            <div class="score-half red-team" onclick="handleScoreClick(event, 1)">
+                <div id="namesTeam1" class="player-names-overlay"></div>
+                <div id="s1" class="score-huge">0</div>
+                <div class="tap-hint">ลดแต้ม 👈 | เพิ่มแต้ม 👉</div>
             </div>
             
-            <div class="score-area blue-team" onclick="handleScoreClick(event, 2)">
-                <div id="namesTeam2" class="player-names-display"></div>
-                <div id="s2" class="score-val">0</div>
+            <div class="score-half blue-team" onclick="handleScoreClick(event, 2)">
+                <div id="namesTeam2" class="player-names-overlay"></div>
+                <div id="s2" class="score-huge">0</div>
+                <div class="tap-hint">ลดแต้ม 👈 | เพิ่มแต้ม 👉</div>
             </div>
+            <button class="btn-floating-back" onclick="backToRandom()">✕</button>
         </div>
-        <button class="btn-outline btn-back" onclick="backToRandom()">ย้อนกลับ</button>
     </div>
 </div>
 
