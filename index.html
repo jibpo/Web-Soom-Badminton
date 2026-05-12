@@ -3,87 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Badminton Pro - Modern UI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4">
+    <title>Badminton Pro Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
     <div id="randomPage">
         <div class="header-section">
-            <div class="header-content">
-                <p class="welcome-text">โจ๋เรนเจอร์ Match!,</p>
-                <h1 class="main-title">Badminton Match!</h1>
-            </div>
-            <div class="circle-deco"></div>
+            <p class="welcome-text">Let's play,</p>
+            <h1 class="main-title">Badminton Match</h1>
         </div>
 
-        <div class="card main-card">
-            <h3 class="section-label">Player List</h3>
-            <textarea id="playerInput" placeholder="ใส่ชื่อคนละบรรทัดที่นี่..."></textarea>
-            <div class="action-grid">
-                <button class="btn-soft" onclick="load8Players()">🧪 Sample</button>
-                <button class="btn-primary" onclick="startRandom()">Start Match</button>
-            </div>
-        </div>
+        <div class="content-body">
+            <div class="card">
+                <h3 class="section-label">จัดการก๊วน</h3>
+                <div class="group-save-area">
+                    <input type="text" id="groupNameInput" placeholder="ตั้งชื่อก๊วนใหม่...">
+                    <button id="saveBtn" onclick="saveCurrentGroup()">บันทึก</button>
+                </div>
+                <div id="savedGroupsList" class="saved-groups-container"></div>
 
-        <div id="matchCard" class="match-card" style="display:none">
-            <div class="match-header">
-                <span id="roundCount">Match 1</span>
-                <div class="vs-badge">VS</div>
-            </div>
-            <div class="teams-grid">
-                <div class="team red">
-                    <div id="p1" class="player-name">-</div>
-                    <div id="p2" class="player-name">-</div>
-                </div>
-                <div class="team blue">
-                    <div id="p3" class="player-name">-</div>
-                    <div id="p4" class="player-name">-</div>
+                <textarea id="playerInput" placeholder="ใส่ชื่อคนละบรรทัด..." oninput="autoSaveNames()"></textarea>
+                
+                <div class="action-grid">
+                    <button class="btn-soft" onclick="clearNames()">ล้างชื่อ</button>
+                    <button class="btn-primary" onclick="startRandom()">สุ่มคู่ใหม่</button>
                 </div>
             </div>
-            
-            <div class="match-actions">
-                <button class="btn-dark" onclick="openScoreboard()">Scoreboard ⚔️</button>
+
+            <div id="matchCard" class="card" style="display:none">
+                <div class="match-header">
+                    <span id="roundCount" class="round-text">Match 1</span>
+                    <div class="vs-badge">VS</div>
+                </div>
+                <div class="teams-container">
+                    <div class="team-group">
+                        <div id="p1" class="player-name red">-</div>
+                        <div id="p2" class="player-name red">-</div>
+                    </div>
+                    <div class="team-group">
+                        <div id="p3" class="player-name blue">-</div>
+                        <div id="p4" class="player-name blue">-</div>
+                    </div>
+                </div>
+                <button class="btn-dark" onclick="openScoreboard()">นับคะแนน ⚔️</button>
                 <div class="match-nav-grid">
-                    <button class="btn-soft" id="prevBtn" onclick="prevMatch()">⬅️ Prev</button>
-                    <button class="btn-secondary" onclick="nextMatch()">Next ➡️</button>
+                    <button class="btn-soft" id="prevBtn" onclick="prevMatch()">ย้อนหลัง</button>
+                    <button class="btn-secondary" onclick="nextMatch()">คู่ถัดไป</button>
                 </div>
+                <p id="playerStats" class="stats-text"></p>
+                <button class="btn-text" onclick="resetAll()">เริ่มใหม่หมด (Reset)</button>
             </div>
-            <p id="playerStats" class="stats-text"></p>
-            <button class="btn-text" onclick="resetAll()">Reset All</button>
         </div>
     </div>
 
-    <div id="scorePage" style="display:none;">
-        <div class="score-screen">
-            <div class="score-zone team-red" onclick="handleScoreClick(event, 1)">
-                <div id="namesTeam1" class="names-overlay"></div>
-                <div class="score-row">
-                    <div id="s1" class="huge-score">0</div>
-                    <div id="shuttle1" class="shuttle-icon">🏸</div>
-                </div>
-            </div>
-            <div class="score-zone team-blue" onclick="handleScoreClick(event, 2)">
-                <div id="namesTeam2" class="names-overlay"></div>
-                <div class="score-row">
-                    <div id="s2" class="huge-score">0</div>
-                    <div id="shuttle2" class="shuttle-icon">🏸</div>
-                </div>
-            </div>
-            <button class="back-circle" onclick="backToRandom()">✕</button>
+    <div id="scorePage">
+        <div class="score-zone team-red" onclick="handleScoreClick(event, 1)">
+            <div id="namesTeam1" class="names-overlay"></div>
+            <div class="huge-score" id="s1">0</div>
+            <div id="shuttle1" class="shuttle-icon">🏸</div>
         </div>
+        <div class="score-zone team-blue" onclick="handleScoreClick(event, 2)">
+            <div id="namesTeam2" class="names-overlay"></div>
+            <div class="huge-score" id="s2">0</div>
+            <div id="shuttle2" class="shuttle-icon">🏸</div>
+        </div>
+        <div class="back-circle" onclick="backToRandom()">✕</div>
     </div>
 </div>
 
 <div id="deuceModal" class="modal">
     <div class="modal-content">
-        <h2>คะแนนเท่ากัน 20-20!</h2>
-        <p>ต้องการดิวส์ต่อหรือจบเกมเพียงเท่านี้?</p>
+        <h2>Deuce!</h2>
         <div class="modal-actions">
-            <button class="btn-primary" onclick="startDeuce()">เล่นต่อ (Deuce)</button>
-            <button class="btn-soft" onclick="showEndModal()">จบเกมเลย</button>
+            <button class="btn-primary" onclick="startDeuce()">เล่นต่อ</button>
+            <button class="btn-soft" onclick="showEndModal()">จบเกม</button>
         </div>
     </div>
 </div>
@@ -92,12 +88,12 @@
     <div class="modal-content">
         <h2 id="winnerTitle">Finished!</h2>
         <div class="modal-actions">
-            <button class="btn-soft" onclick="closeModal()">Back to Score</button>
-            <button class="btn-primary" onclick="endGame()">New Match</button>
+            <button class="btn-soft" onclick="closeModal()">ย้อนดูแต้ม</button>
+            <button class="btn-primary" onclick="endGame()">คู่ถัดไป</button>
         </div>
     </div>
 </div>
 
-<script src="script.js?v=4"></script>
+<script src="script.js"></script>
 </body>
 </html>
